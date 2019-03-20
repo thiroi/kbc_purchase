@@ -38,18 +38,6 @@ func uploadBq(ctx context.Context, bqStructs []CommonBqStruct) error {
 	return nil
 }
 
-func initAsanaData(ctx context.Context) error {
-	return deleteAndCreateBq(
-		ctx,
-		[]CommonBqStruct{
-			{"project", Project{}},
-			{"section", Section{}},
-			{"task", Task{}},
-			{"tag", Tag{}},
-			{"user", User{}},
-		})
-}
-
 func deleteAndCreateBq(ctx context.Context, bqStructs []CommonBqStruct) (error) {
 	client, err := bigquery.NewClient(ctx, config.Bq.Project)
 	if err != nil {
