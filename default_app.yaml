@@ -1,0 +1,12 @@
+application: <application-name>
+version: 0-0-1
+runtime: go
+api_version: go1
+threadsafe: true
+module: <module-name>
+
+handlers:
+
+## goapp
+- url: /.*
+  script: _go_app
