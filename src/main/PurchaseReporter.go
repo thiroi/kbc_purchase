@@ -6,10 +6,10 @@ import (
 
 func reportPurchaseOnSlack(ctx context.Context, pd PurchaseDetail){
 	reporter := Reporter{config.Slack.Name, config.Slack.Icon, "お買い上げありがとうございます"}
-	sendNlope(ctx, makeMessage(pd), reporter)
+	sendNlope(ctx, makePurchaseMessage(pd), reporter)
 }
 
-func makeMessage(pd PurchaseDetail)(string){
+func makePurchaseMessage(pd PurchaseDetail)(string){
 	result := "おなまえ: " + pd.User + " 様\n" +
 	"購入金額 : " + strconv.Itoa(int(pd.Price)) + "円 \n"
 

@@ -5,7 +5,6 @@ type PurchaseResponse struct{
 	Message string `json:"message"`
 }
 
-
 func makeError(err error)(PurchaseResponse){
 	return PurchaseResponse{false, err.Error()}
 }

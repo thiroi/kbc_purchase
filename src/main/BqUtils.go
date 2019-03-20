@@ -186,7 +186,6 @@ func readQuery(ctx context.Context, basicSQL string)(*bigquery.RowIterator, erro
 	}
 
 	var query = strings.Replace(basicSQL, "<project>", config.Bq.Project, -1)
-	query = strings.Replace(query, "<data_set>", config.Bq.Dataset, -1)
 
 	// 引数で渡した文字列を元にQueryを生成
 	q := client.Query(query)

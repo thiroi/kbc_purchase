@@ -3,7 +3,7 @@ package main
 import (
 "fmt"
 "net/http"
-"log"
+"google.golang.org/appengine/log"
 "bytes"
 "golang.org/x/text/encoding/japanese"
 "golang.org/x/text/transform"
@@ -12,32 +12,34 @@ import (
 "time"
 "github.com/nlopes/slack"
 "google.golang.org/appengine/urlfetch"
-	"golang.org/x/net/context"
+"golang.org/x/net/context"
 )
 
 func SlackSender(w http.ResponseWriter, ctx *http.Request) {
 	fmt.Fprint(w, "Hello, world222!")
-	//sendSlack(ctx)
-	log.Println("slack done")
 }
 
 
 
 func sendNlope(ctx context.Context, message string, reporter Reporter){
-	log.Println("Start sending with nlope")
+	sendNlopeWithChannel(ctx, message, reporter, config.Slack.Channel)
+}
+
+func sendNlopeWithChannel(ctx context.Context, message string, reporter Reporter, channel string){
+	log.Infof(ctx, "Start sending with nlope")
 	slack.SetHTTPClient(urlfetch.Client(ctx))
 	api := slack.New(config.Slack.Token)
 	params := slack.PostMessageParameters{}
 	params.IconEmoji = reporter.Icon
 	params.Username = reporter.Name
 	message = reporter.Talk + "\n\n" + "======================================== \n" + message + "========================================"
-	log.Println(message)
-	channelID, timestamp, err := api.PostMessage(config.Slack.Channel, message, params)
+	log.Infof(ctx, message)
+	channelID, timestamp, err := api.PostMessage(channel, message, params)
 	if err != nil {
-		fmt.Printf("%s\n", err)
+		log.Errorf(ctx, "%s\n", err)
 		return
 	}
-	log.Printf("Message successfully sent to channel %s at %s", channelID, timestamp)
+	log.Infof(ctx, "Message successfully sent to channel %s at %s", channelID, timestamp)
 }
 
 func BytesToShiftJIS(b []byte) (string, error) {
